@@ -5,9 +5,23 @@
 #
 #   movies = Movie.create([{ name: "Star Wars" }, { name: "Lord of the Rings" }])
 #   Character.create(name: "Luke", movie: movies.first)
-Airport.create(code: "SFO")
-Airport.create(code: "SFO")
-Airport.create(code: "LAX")
-Airport.create(code: "JFK")
-Airport.create(code: "PHX")
-Airport.create(code: "BOS")
+start_time = DateTime.new(2012, 8, 29, 22, 35, 0).change(day: 1)
+end_time = DateTime.new(2012, 8, 29, 22, 35, 0).change(day: 1)
+duration = 1440
+fa = Flight.create(start: start_time, duration: duration)
+fb = Flight.create(start: end_time, duration: duration)
+
+a = Airport.create(code: "SFO")
+
+b = Airport.create(code: "SFO")
+c = Airport.create(code: "LAX")
+d = Airport.create(code: "JFK")
+e = Airport.create(code: "PHX")
+f = Airport.create(code: "BOS")
+
+a.arrival_flights << fa
+a.departing_flights << fb
+
+
+b.arrival_flights << fb
+b.departing_flights << fa
