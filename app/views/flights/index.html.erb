@@ -5,7 +5,8 @@
       <div>
         <%= form.label :start, "Date: " %>
         <%# Not sure how to keep date value if I give it a blank default value, tried default or select%>
-        <%= form.date_select :start, prompt: 'Select Airport'%>
+        <% date = Date.new params[:flights][:'start(1i)'].to_i, params[:flights][:'start(2i)'].to_i, params[:flights][:'start(3i)'].to_i%>
+        <%= form.date_select :start, include_blank: true, :order => [:month, :day, :year], selected: date%>
       </div>
       
       <div>
@@ -29,7 +30,7 @@
     <% else %>
       <div>
         <%= form.label :start, "Date: " %>
-        <%= form.date_select :start, prompt: 'Select Airport'%>
+        <%= form.date_select :start, :order => [:month, :day, :year], prompt: ["Select Month", "Select Day", "Select Year"] %>
       </div>
         
       <div>

@@ -14,8 +14,9 @@ class FlightsController < ApplicationController
         @flights = @flights.where(arrival_id: params[:flights][:arrival_airport])
       end
       # start
-      if params[:flights][:start]
-        @flights = @flights.where("DATE(start) = ?", params[:flights][:start])
+      if params[:flights][:'start(1i)'] && params[:flights][:'start(2i)'] && params[:flights][:'start(3i)']
+        date = Date.new params[:flights][:'start(1i)'].to_i, params[:flights][:'start(2i)'].to_i, params[:flights][:'start(3i)'].to_i
+        @flights = @flights.where("DATE(start) = ?", date)
       end
     else 
       @flights = Flight.all
@@ -24,7 +25,7 @@ class FlightsController < ApplicationController
 
   private 
   def flight_params
-    # params.require(:flights).permit(:'start(1i)', :'start(2i)', :'start(3i)', :arrival_airport, :departure_airport, :passengers);
-    params.require(:flights).permit(:start, :arrival_airport, :departure_airport, :passengers);
+    params.require(:flights).permit(:'start(1i)', :'start(2i)', :'start(3i)', :arrival_airport, :departure_airport, :passengers);
+    # params.require(:flights).permit(:start, :arrival_airport, :departure_airport, :passengers);
   end
 end
