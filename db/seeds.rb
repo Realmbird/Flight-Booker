@@ -5,23 +5,23 @@
 #
 #   movies = Movie.create([{ name: "Star Wars" }, { name: "Lord of the Rings" }])
 #   Character.create(name: "Luke", movie: movies.first)
-start_time = DateTime.new(2012, 8, 29, 22, 35, 0).change(day: 1)
-end_time = DateTime.new(2012, 8, 29, 22, 35, 0).change(day: 1)
-duration = 1440
-fa = Flight.create(start: start_time, duration: duration)
-fb = Flight.create(start: end_time, duration: duration)
+Airport.destroy_all
+Flight.destroy_all
 
-a = Airport.create(code: "SFO")
+airports = %w[JFK DTW SFO LGA]
 
-b = Airport.create(code: "SFO")
-c = Airport.create(code: "LAX")
-d = Airport.create(code: "JFK")
-e = Airport.create(code: "PHX")
-f = Airport.create(code: "BOS")
+airports.each { |code| Airport.create(code: code) }
 
-a.arrival_flights << fa
-a.departing_flights << fb
+def rand_duration()
+  rand 3600..86400
+end
 
+def rand_time(from, to = Time.now)
+  Time.at(rand(from.to_f..to.to_f))
+end
 
-b.arrival_flights << fb
-b.departing_flights << fa
+100.times do
+  Flight.create({ arrival_id: Airport.all.sample.id, departing_id: Airport.all.sample.id, start: rand_time(2.days.ago), duration: rand_duration })
+end
+
+Flight.where('arrival_id = departing_id').delete_all
